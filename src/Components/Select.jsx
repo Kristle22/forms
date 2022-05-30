@@ -48,19 +48,20 @@ function Select() {
         <option value='fantasy'>fantasy</option>
         <option value='cursive'>cursive</option>
       </select>
-      <br />
-      <input
-        ref={input}
-        type='text'
-        value={text}
-        onChange={inputText}
-        style={{
-          height: '50px',
-          width: '300px',
-          margin: '30px',
-          fontFamily: '',
-        }}
-      />
+      <div>
+        <h3>Iveskite teksta: </h3>
+        <input
+          ref={input}
+          type='text'
+          value={text}
+          onChange={inputText}
+          style={{
+            height: '50px',
+            width: '300px',
+            fontFamily: '',
+          }}
+        />
+      </div>
     </div>
   )
 }
