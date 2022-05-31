@@ -27,7 +27,7 @@ function Kvadrateliai() {
         type='text'
         value={number}
         onChange={inputNumber}
-        style={{ width: '100px', fontSize: '30px' }}
+        style={{ width: '50px', fontSize: '30px', textAlign: 'center' }}
       />
       <button onClick={pridetiKv}>Prideti</button>
     </>

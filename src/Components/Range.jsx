@@ -1,19 +1,15 @@
-import { useRef, useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function Range() {
   const [kvadr, setKvadr] = useState([])
-  const [plotis, setPlotis] = useState('100px')
-  const [aukstis, setAukstis] = useState('100px')
-  const [spalva, setSpalva] = useState('#2c2c3c')
-
-  const square = useRef()
-  console.log(square.current)
+  const [plotis, setPlotis] = useState()
+  const [aukstis, setAukstis] = useState()
+  const [spalva, setSpalva] = useState()
 
   const ikeltiKvadr = () => {
-    setKvadr([kvadr])
-    square.current.style.width = '100px'
-    square.current.style.height = '100px'
-    square.current.style.background = '#2c2c3c'
+    setPlotis('100px')
+    setAukstis('100px')
+    setSpalva('#2c2c3c')
   }
 
   const keistiPloti = (e) => {
@@ -29,29 +25,52 @@ function Range() {
   }
 
   const nebekeisti = () => {
-    square.current.style.width = plotis
-    square.current.style.height = aukstis
-    square.current.style.color = spalva
-    // setPlotis((square.current.style.width = plotis))
-    // setAukstis((square.current.style.height = aukstis))
-    // setSpalva((square.current.style.color = spalva))
+    setKvadr((previous) => [...previous, [plotis, aukstis, spalva]])
+    setPlotis()
+    setAukstis()
+    setSpalva()
   }
+
+  useEffect(() => {
+    const issaugotasKvadr = JSON.parse(
+      localStorage.getItem('issaugoti kvadratai')
+    )
+    if (issaugotasKvadr) setKvadr(issaugotasKvadr)
+  }, [])
+
+  useEffect(() => {
+    if (kvadr?.length) {
+      localStorage.setItem('issaugoti kvadratai', JSON.stringify(kvadr))
+    }
+  }, [kvadr])
+
   return (
     <>
-      {kvadr.map((k, i) => (
+      <div style={{ display: 'flex' }}>
+        {kvadr.map((k, i) => (
+          <div
+            key={i}
+            className='kvd'
+            style={{
+              width: k[0],
+              height: k[1],
+              background: k[2],
+            }}
+          >
+            Issaugotas kvadr.
+          </div>
+        ))}
+      </div>
+      {aukstis && plotis && spalva && (
         <div
-          ref={square}
-          key={i}
           className='kvd'
           style={{
-            background: spalva,
             width: plotis,
             height: aukstis,
+            background: spalva,
           }}
-        >
-          {k}
-        </div>
-      ))}
+        ></div>
+      )}
       <div>
         <label>Kvadrato plotis: </label>
         <input

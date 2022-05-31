@@ -14,24 +14,30 @@ function Katinukai() {
 
   list.sort((a, b) => b[1] - a[1])
 
-  const entry = [name, weight]
+  // let sum = useRef(0)
+  const [sum, setSum] = useState(0)
 
-  let sum = useRef(0)
   const render = () => {
-    setList((l) => [...l, entry])
-    sum.current += Number(weight)
+    // sum.current += Number(weight)
+    // const entry = [name, weight]
+    setList((l) => [...l, [name, weight]])
+    setSum((prev) => prev + Number(weight))
   }
-  console.log(sum.current)
 
   useEffect(() => {
-    setList(JSON.parse(localStorage.getItem('cat') ?? '[]'))
+    console.log(
+      'pirmas efektas: ',
+      JSON.parse(localStorage.getItem('Katinukai'))
+    )
+    const unchangedList = JSON.parse(localStorage.getItem('Katinukai'))
+    if (unchangedList) setList(unchangedList)
   }, [])
 
   useEffect(() => {
-    if (null === list) {
-      return
+    console.log('antras efektas: ', list)
+    if (list?.length) {
+      localStorage.setItem('Katinukai', JSON.stringify(list))
     }
-    localStorage.setItem('cat', JSON.stringify(list))
   }, [list])
 
   return (
@@ -46,18 +52,14 @@ function Katinukai() {
         style={{ width: '50px' }}
       />
       <button onClick={render}>Ivesti</button>
-      <div
-        style={{
-          textAlign: 'left',
-        }}
-      >
+      <div>
         <h2>Katinuku sarasas:</h2>
         <div>
-          {list.map((el, i) => (
-            <div key={i}>{el.join(': ')}</div>
-          ))}
+          {list
+            ? list.map((el, i) => <div key={i}>{el.join(': ')}</div>)
+            : null}
         </div>
-        <h3>Bendras katinuku svoris: {sum.current}</h3>
+        <h3>Bendras katinuku svoris: {sum}</h3>
       </div>
     </>
   )
